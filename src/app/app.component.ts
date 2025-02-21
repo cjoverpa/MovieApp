@@ -2,30 +2,26 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { MovieState } from './store/movies/movie.model';
-import { MovieService } from '../shared/services/movie.service';
-import { loadMoviesSuccess } from './store/movies/movie.actions';
+import { MovieFacade } from './store/movies/movie.facade';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule,],
+  imports: [RouterOutlet, CommonModule],
+  providers: [MovieFacade],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
-export class AppComponent implements OnInit{
-  private movieService = inject(MovieService);
-  movies$: Observable<any>;
+export class AppComponent implements OnInit {
+  private readonly movieFacade = inject(MovieFacade);
 
-  constructor(private store: Store<{movies: MovieState}>){
-    this.movies$ = this.store.select(state => state.movies.movies)
-  }
+  movies$: Observable<any> = this.movieFacade.movies$;
 
   ngOnInit(): void {
-    this.movieService.getMovies().subscribe({
-      next: response => this.store.dispatch(loadMoviesSuccess({movies: response.results})),
-      error: error => console.log(error)
-    });
+    // this.movieService.getMovies().subscribe({
+    //   next: (response) => this.movieFacade.loadMovies(response.results),
+    //   error: (error) => console.log(error),
+    // });
+    this.movieFacade.loadMovies();
+    // this.movies$.subscribe(console.log);
   }
-
 }

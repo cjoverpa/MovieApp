@@ -3,7 +3,3 @@ export interface Movie {
   title: string;
   overview: string;
 }
-
-export interface MovieState {
-  movies: Movie[];
-}
