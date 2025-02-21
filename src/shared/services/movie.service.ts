@@ -4,16 +4,19 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MovieService {
   private http = inject(HttpClient);
   private apiKey = environment.movieApiKey;
-  private baseURL = 'https://api.themoviedb.org/3'
+  private baseURL = 'https://api.themoviedb.org/3';
 
-  constructor() { }
+  constructor() {}
 
-  getMovies(): Observable<any>{
-    return this.http.get(`${this.baseURL}/movie/popular?api_key=${this.apiKey}&language=es-ES&page=1`)
+  getMovies(): Observable<any> {
+    debugger;
+    return this.http.get(
+      `${this.baseURL}/movie/popular?api_key=${this.apiKey}&language=es-ES&page=1`,
+    );
   }
 }
